@@ -8,6 +8,8 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ElegantShape } from './shape-landing-hero'
+// @ts-ignore
+import LiquidEther from '@/components/LiquidEther'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -35,6 +37,23 @@ export default function Hero() {
       ref={sectionRef}
       className="relative flex flex-col items-center justify-center text-center px-4 py-36 sm:py-48 overflow-hidden bg-background"
     >
+      {/* LiquidEther background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <LiquidEther
+          mouseForce={55}
+          cursorSize={35}
+          isViscous={false}
+          viscous={30}
+          colors={["#0071e3", "#5ac8fa", "#e8f4ff"]}
+          autoDemo
+          autoSpeed={1.2}
+          autoIntensity={2.5}
+          isBounce={false}
+          resolution={0.5}
+          dt={0.025}
+        />
+      </div>
+
       {/* Shapes */}
       <div ref={shapesRef} className="absolute inset-0 overflow-hidden pointer-events-none">
         <ElegantShape delay={0.2}  width={600} height={140} rotate={-12} gradient="from-[#0071e3]/[0.10]" className="-left-[6%] top-[14%]" />
