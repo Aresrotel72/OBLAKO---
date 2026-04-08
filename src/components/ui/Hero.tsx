@@ -10,6 +10,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ElegantShape } from './shape-landing-hero'
 // @ts-ignore
 import LiquidEther from '@/components/LiquidEther'
+import SplitText from '@/components/SplitText'
+import ShinyText from '@/components/ShinyText'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -84,22 +86,37 @@ export default function Hero() {
           className="inline-flex items-center gap-2 mb-7 px-4 py-1.5 rounded-full border border-[#0071e3]/25 bg-[#0071e3]/8"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#0071e3] animate-pulse" />
-          <p className="text-xs font-medium text-[#0071e3] tracking-widest uppercase">
-            Мобильные аксессуары · Полоцк
-          </p>
+          <ShinyText
+            text="Мобильные аксессуары · Полоцк"
+            speed={3}
+            color="#0071e3"
+            shineColor="#5ac8fa"
+            spread={100}
+            className="text-xs font-medium tracking-widest uppercase"
+          />
         </motion.div>
 
         {/* Заголовок */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease }}
-          className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] text-foreground mb-6"
-        >
-          Защити свой
-          <br />
-          <span className="gradient-text">iPhone.</span>
-        </motion.h1>
+        <div className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] text-foreground mb-6">
+          <SplitText
+            text="Защити свой"
+            tag="h1"
+            className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] text-foreground block"
+            delay={40}
+            duration={0.9}
+            from={{ opacity: 0, y: 50 }}
+            to={{ opacity: 1, y: 0 }}
+          />
+          <SplitText
+            text="iPhone."
+            tag="h1"
+            className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] gradient-text block"
+            delay={30}
+            duration={0.9}
+            from={{ opacity: 0, y: 50 }}
+            to={{ opacity: 1, y: 0 }}
+          />
+        </div>
 
         {/* Подзаголовок */}
         <motion.p
