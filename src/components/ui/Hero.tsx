@@ -7,7 +7,6 @@ import { ArrowRight } from 'lucide-react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ElegantShape } from './shape-landing-hero'
 // @ts-ignore
 import LiquidEther from '@/components/LiquidEther'
 import SplitText from '@/components/SplitText'
@@ -20,16 +19,11 @@ const ease = [0.16, 1, 0.3, 1] as const
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const shapesRef  = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
-    if (!sectionRef.current || !contentRef.current || !shapesRef.current) return
+    if (!sectionRef.current || !contentRef.current) return
     gsap.to(contentRef.current, {
       y: -80, ease: 'none',
-      scrollTrigger: { trigger: sectionRef.current, start: 'top top', end: 'bottom top', scrub: true },
-    })
-    gsap.to(shapesRef.current, {
-      y: 60, ease: 'none',
       scrollTrigger: { trigger: sectionRef.current, start: 'top top', end: 'bottom top', scrub: true },
     })
   }, { scope: sectionRef })
@@ -54,13 +48,6 @@ export default function Hero() {
           resolution={0.5}
           dt={0.025}
         />
-      </div>
-
-      {/* Shapes */}
-      <div ref={shapesRef} className="absolute inset-0 overflow-hidden pointer-events-none">
-        <ElegantShape delay={0.2}  width={600} height={140} rotate={-12} gradient="from-[#0071e3]/[0.10]" className="-left-[6%] top-[14%]" />
-        <ElegantShape delay={0.45} width={440} height={110} rotate={17}  gradient="from-[#0077ed]/[0.08]" className="right-[-3%] top-[10%]" />
-        <ElegantShape delay={0.65} width={260} height={70}  rotate={-20} gradient="from-[#30d158]/[0.07]" className="left-[18%] bottom-[10%]" />
       </div>
 
       {/* Dot grid */}

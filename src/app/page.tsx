@@ -32,7 +32,6 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <BrandMarquee />
       <CategoryGrid />
       <Suspense fallback={<ProductsSkeleton />}>
         <CasesShowcase />
