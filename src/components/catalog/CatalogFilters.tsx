@@ -1,106 +1,205 @@
-'use client'
+"use client";
 
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
-import { Search, X } from 'lucide-react'
+import { useState } from "react";
+import { SlidersHorizontal, X } from "lucide-react";
 
-const CATEGORIES = ['Все', 'Чехлы', 'Стекла', 'Зарядки', 'Кабели', 'Наушники', 'Аксессуары']
+const IPHONE_MODELS = [
+  "iPhone 16 Pro Max",
+  "iPhone 16 Pro",
+  "iPhone 16",
+  "iPhone 15 Pro Max",
+  "iPhone 15 Pro",
+  "iPhone 15",
+  "iPhone 14 Pro Max",
+  "iPhone 14",
+  "iPhone 13",
+];
 
-export default function CatalogFilters() {
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+const CASE_TYPES = [
+  { id: "silicone", label: "Силикон" },
+  { id: "leather", label: "Кожа" },
+  { id: "magsafe", label: "MagSafe" },
+  { id: "clear", label: "Прозрачный" },
+  { id: "tpu", label: "TPU" },
+];
 
-  const currentSearch = searchParams.get('search') || ''
-  const currentCategory = searchParams.get('category') || ''
-  const currentInStock = searchParams.get('inStock') === 'true'
+export type CatalogFiltersState = {
+  models: string[];
+  types: string[];
+  inStockOnly: boolean;
+  priceMin: number;
+  priceMax: number;
+  sortBy: "popular" | "price_asc" | "price_desc" | "newest";
+};
 
-  const [searchValue, setSearchValue] = useState(currentSearch)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+const DEFAULT_FILTERS: CatalogFiltersState = {
+  models: [],
+  types: [],
+  inStockOnly: false,
+  priceMin: 0,
+  priceMax: 10000,
+  sortBy: "popular",
+};
 
-  useEffect(() => {
-    setSearchValue(currentSearch)
-  }, [currentSearch])
+type Props = {
+  onChange: (filters: CatalogFiltersState) => void;
+  totalCount: number;
+};
 
-  function updateURL(updates: Record<string, string | null>) {
-    const params = new URLSearchParams(searchParams.toString())
-    for (const [key, value] of Object.entries(updates)) {
-      if (value === null || value === '') {
-        params.delete(key)
-      } else {
-        params.set(key, value)
-      }
-    }
-    params.delete('page')
-    router.push(`${pathname}?${params.toString()}`)
+export function CatalogFilters({ onChange, totalCount }: Props) {
+  const [filters, setFilters] = useState<CatalogFiltersState>(DEFAULT_FILTERS);
+  const [expanded, setExpanded] = useState(false);
+
+  function update(patch: Partial<CatalogFiltersState>) {
+    const next = { ...filters, ...patch };
+    setFilters(next);
+    onChange(next);
   }
 
-  function handleSearchChange(value: string) {
-    setSearchValue(value)
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => {
-      updateURL({ search: value || null })
-    }, 400)
+  function toggleModel(m: string) {
+    const models = filters.models.includes(m)
+      ? filters.models.filter((x) => x !== m)
+      : [...filters.models, m];
+    update({ models });
   }
 
-  function handleCategoryClick(category: string) {
-    updateURL({ category: category === 'Все' ? null : category })
+  function toggleType(t: string) {
+    const types = filters.types.includes(t)
+      ? filters.types.filter((x) => x !== t)
+      : [...filters.types, t];
+    update({ types });
   }
 
-  function handleInStockToggle() {
-    updateURL({ inStock: currentInStock ? null : 'true' })
-  }
+  const activeCount =
+    filters.models.length +
+    filters.types.length +
+    (filters.inStockOnly ? 1 : 0) +
+    (filters.sortBy !== "popular" ? 1 : 0);
 
   return (
-    <div className="space-y-3 mb-8">
-      {/* Поиск */}
-      <div className="relative">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-muted pointer-events-none" />
-        <input
-          type="text"
-          value={searchValue}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          placeholder="Поиск товаров..."
-          className="w-full bg-background-card border border-border rounded-xl pl-9 pr-9 py-2.5 text-sm text-foreground placeholder-foreground-muted focus:outline-none focus:border-[#0071e3]/50 transition-colors shadow-sm"
-        />
-        {searchValue && (
-          <button
-            onClick={() => handleSearchChange('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground-muted hover:text-foreground transition-colors"
-            aria-label="Очистить поиск"
-          >
-            <X size={14} />
-          </button>
-        )}
-      </div>
+    <div className="space-y-3">
+      {/* Top bar */}
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
 
-      {/* Категории + фильтр В наличии */}
-      <div className="flex flex-wrap items-center gap-2">
-        {CATEGORIES.map((cat) => (
           <button
-            key={cat}
-            onClick={() => handleCategoryClick(cat)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-              (cat === 'Все' && !currentCategory) || cat === currentCategory
-                ? 'bg-[#0071e3] text-white'
-                : 'bg-background-card border border-border text-foreground-secondary hover:border-[#0071e3]/30 hover:text-foreground'
+            onClick={() => update({ inStockOnly: !filters.inStockOnly })}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[13px] transition-all ${
+              filters.inStockOnly
+                ? "bg-[var(--accent)] border-[var(--accent)] text-white"
+                : "bg-white border-[var(--border)] text-[var(--foreground-secondary)] hover:border-[var(--border-hover)]"
             }`}
           >
-            {cat}
+            <span className={`w-1.5 h-1.5 rounded-full ${filters.inStockOnly ? "bg-white" : "bg-[var(--success)]"}`} />
+            В наличии
           </button>
-        ))}
 
+          {CASE_TYPES.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => toggleType(t.id)}
+              className={`px-3 py-1.5 rounded-full border text-[13px] transition-all ${
+                filters.types.includes(t.id)
+                  ? "bg-[var(--accent)] border-[var(--accent)] text-white"
+                  : "bg-white border-[var(--border)] text-[var(--foreground-secondary)] hover:border-[var(--border-hover)]"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[13px] transition-all bg-white hover:border-[var(--border-hover)] ${
+              expanded ? "border-[var(--border-hover)] text-[var(--foreground)]" : "border-[var(--border)] text-[var(--foreground-secondary)]"
+            }`}
+          >
+            <SlidersHorizontal size={12} />
+            Ещё
+            {activeCount > 0 && (
+              <span className="w-4 h-4 rounded-full bg-[var(--accent)] text-white text-[10px] flex items-center justify-center">
+                {activeCount}
+              </span>
+            )}
+          </button>
+
+          {activeCount > 0 && (
+            <button
+              onClick={() => { setFilters(DEFAULT_FILTERS); onChange(DEFAULT_FILTERS); }}
+              className="flex items-center gap-1 text-[13px] text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors"
+            >
+              <X size={12} />
+              Сбросить
+            </button>
+          )}
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="text-[13px] text-[var(--foreground-muted)]">{totalCount} товаров</span>
+          <select
+            value={filters.sortBy}
+            onChange={(e) => update({ sortBy: e.target.value as CatalogFiltersState["sortBy"] })}
+            className="appearance-none bg-white border border-[var(--border)] text-[var(--foreground)] text-[13px] px-3 py-1.5 rounded-full focus:outline-none focus:border-[var(--accent)] cursor-pointer"
+          >
+            <option value="popular">По популярности</option>
+            <option value="price_asc">Сначала дешёвые</option>
+            <option value="price_desc">Сначала дорогие</option>
+            <option value="newest">Новинки</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Model pills */}
+      <div className="flex flex-wrap gap-2">
         <button
-          onClick={handleInStockToggle}
-          className={`ml-auto px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
-            currentInStock
-              ? 'border-[#30d158] bg-[#30d158]/10 text-[#30d158]'
-              : 'border-border bg-background-card text-foreground-secondary hover:border-[#0071e3]/30 hover:text-foreground'
+          onClick={() => update({ models: [] })}
+          className={`px-3 py-1 rounded-full border text-[12px] transition-all ${
+            filters.models.length === 0
+              ? "bg-[var(--background-elevated)] border-[var(--border-hover)] text-[var(--foreground)]"
+              : "bg-white border-[var(--border)] text-[var(--foreground-muted)] hover:border-[var(--border-hover)]"
           }`}
         >
-          В наличии
+          Все модели
         </button>
+        {IPHONE_MODELS.map((m) => (
+          <button
+            key={m}
+            onClick={() => toggleModel(m)}
+            className={`px-3 py-1 rounded-full border text-[12px] transition-all ${
+              filters.models.includes(m)
+                ? "bg-[var(--background-elevated)] border-[var(--border-hover)] text-[var(--foreground)]"
+                : "bg-white border-[var(--border)] text-[var(--foreground-muted)] hover:border-[var(--border-hover)]"
+            }`}
+          >
+            {m}
+          </button>
+        ))}
       </div>
+
+      {/* Expanded price */}
+      {expanded && (
+        <div className="p-4 bg-[var(--background-secondary)] border border-[var(--border)] rounded-2xl">
+          <label className="block text-[12px] text-[var(--foreground-secondary)] mb-2">
+            Цена: {filters.priceMin.toLocaleString("ru-RU")} — {filters.priceMax.toLocaleString("ru-RU")} ₽
+          </label>
+          <div className="flex gap-2">
+            <input
+              type="number"
+              placeholder="От"
+              value={filters.priceMin || ""}
+              onChange={(e) => update({ priceMin: Number(e.target.value) || 0 })}
+              className="flex-1 bg-white border border-[var(--border)] text-[var(--foreground)] text-[13px] px-3 py-1.5 rounded-xl focus:outline-none focus:border-[var(--accent)]"
+            />
+            <input
+              type="number"
+              placeholder="До"
+              value={filters.priceMax || ""}
+              onChange={(e) => update({ priceMax: Number(e.target.value) || 10000 })}
+              className="flex-1 bg-white border border-[var(--border)] text-[var(--foreground)] text-[13px] px-3 py-1.5 rounded-xl focus:outline-none focus:border-[var(--accent)]"
+            />
+          </div>
+        </div>
+      )}
     </div>
-  )
+  );
 }
