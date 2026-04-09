@@ -2,10 +2,11 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Tag, Gift, ArrowRight, Filter } from 'lucide-react'
+import { Tag, Gift, ArrowRight, Filter, Flame } from 'lucide-react'
 import { useState } from 'react'
 import { DEMO_ANDROID_SALE } from '@/lib/demo-products'
 import { formatPrice } from '@/lib/utils'
+import BlobBg from '@/components/ui/BlobBg'
 
 const ease = [0.16, 1, 0.3, 1] as const
 
@@ -46,15 +47,17 @@ export default function SalePage() {
           transition={{ duration: 0.6, ease }}
           className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#fff0f0] to-[#ffe8e8] border border-[#ff453a]/15 p-8 sm:p-12 mb-10"
         >
-          <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse 70% 60% at 30% 50%, rgba(255,69,58,0.08) 0%, transparent 70%)' }}
+          <BlobBg
+            colors={['#ff453a', '#ff6b35', '#ff9f0a']}
+            count={3}
+            blur={80}
+            opacity={0.2}
           />
+          <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
           <div className="relative">
             <div className="flex items-center gap-2 mb-4">
-              <Tag size={18} className="text-[#ff453a]" />
-              <span className="text-xs font-bold text-[#ff453a] uppercase tracking-widest">Распродажа</span>
+              <Flame size={16} className="text-[#ff453a]" />
+              <span className="text-xs font-bold text-[#ff453a] uppercase tracking-widest">Горячая распродажа</span>
             </div>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-3 tracking-tight">
               Чехлы Android<br />
@@ -126,17 +129,52 @@ export default function SalePage() {
               style={{ willChange: 'transform' }}
             >
               {/* Image area */}
-              <div className="aspect-square bg-background-secondary flex items-center justify-center relative">
-                <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-[#ff453a]/10 border border-[#ff453a]/20 text-[10px] font-bold text-[#ff453a]">
+              <div className="aspect-square flex items-center justify-center relative overflow-hidden"
+                style={{
+                  background: `linear-gradient(135deg, ${
+                    brandOf(product.name) === 'Samsung' ? '#1428a0' :
+                    brandOf(product.name) === 'Xiaomi' ? '#ff6900' :
+                    brandOf(product.name) === 'Redmi' ? '#e31937' :
+                    brandOf(product.name) === 'Huawei' ? '#cf0a2c' :
+                    brandOf(product.name) === 'Honor' ? '#000000' : '#555'
+                  }18, ${
+                    brandOf(product.name) === 'Samsung' ? '#1428a0' :
+                    brandOf(product.name) === 'Xiaomi' ? '#ff6900' :
+                    brandOf(product.name) === 'Redmi' ? '#e31937' :
+                    brandOf(product.name) === 'Huawei' ? '#cf0a2c' :
+                    brandOf(product.name) === 'Honor' ? '#333' : '#888'
+                  }08)`
+                }}
+              >
+                <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-[#ff453a] text-[9px] font-bold text-white shadow-sm">
                   SALE
                 </div>
-                <svg viewBox="0 0 100 160" width="60" className="text-foreground-muted drop-shadow-lg">
-                  <rect x="8" y="6" width="84" height="148" rx="16" fill="currentColor" opacity="0.15" />
-                  <rect x="22" y="14" width="38" height="28" rx="8" fill="currentColor" opacity="0.1" />
-                  <circle cx="50" cy="108" r="22" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.15" />
-                </svg>
+                {/* Phone silhouette */}
+                <div className="relative">
+                  <svg viewBox="0 0 80 130" width="52" style={{
+                    filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.12))',
+                    color: brandOf(product.name) === 'Samsung' ? '#1428a0' :
+                           brandOf(product.name) === 'Xiaomi' ? '#ff6900' :
+                           brandOf(product.name) === 'Redmi' ? '#e31937' :
+                           brandOf(product.name) === 'Huawei' ? '#cf0a2c' :
+                           brandOf(product.name) === 'Honor' ? '#222' : '#555'
+                  }}>
+                    <rect x="6" y="4" width="68" height="122" rx="13" fill="currentColor" opacity="0.25" />
+                    <rect x="6" y="4" width="68" height="122" rx="13" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.4" />
+                    <rect x="18" y="10" width="30" height="6" rx="3" fill="currentColor" opacity="0.2" />
+                    <circle cx="40" cy="114" r="5" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+                  </svg>
+                </div>
                 {/* Brand label */}
-                <span className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[10px] font-semibold text-foreground-muted uppercase tracking-widest">
+                <span className="absolute bottom-2.5 left-1/2 -translate-x-1/2 text-[9px] font-bold uppercase tracking-widest"
+                  style={{
+                    color: brandOf(product.name) === 'Samsung' ? '#1428a0' :
+                           brandOf(product.name) === 'Xiaomi' ? '#ff6900' :
+                           brandOf(product.name) === 'Redmi' ? '#e31937' :
+                           brandOf(product.name) === 'Huawei' ? '#cf0a2c' :
+                           brandOf(product.name) === 'Honor' ? '#333' : '#555'
+                  }}
+                >
                   {brandOf(product.name)}
                 </span>
               </div>

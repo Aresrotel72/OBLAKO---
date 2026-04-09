@@ -4,8 +4,9 @@ import { use, useRef, useState, useEffect } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { Search, X, ChevronDown } from 'lucide-react'
+import { Search, X, ChevronDown, Sparkles } from 'lucide-react'
 import CatalogGrid, { CatalogGridSkeleton } from '@/components/catalog/CatalogGrid'
+import BlobBg from '@/components/ui/BlobBg'
 
 // Плоский список всех моделей для поиска метки по id
 const ALL_MODELS = [
@@ -187,44 +188,81 @@ export default function CasesPage({
   const gridKey = `${model}-${search}-${page}-${inStock}`
 
   return (
-    <main className="min-h-screen px-4 py-12">
-      <div className="max-w-5xl mx-auto">
-        {/* Хлебные крошки */}
-        <div className="flex items-center gap-2 text-sm text-foreground-muted mb-6">
-          <Link href="/" className="hover:text-foreground transition-colors">
-            Главная
-          </Link>
-          <span>/</span>
-          <Link href="/catalog" className="hover:text-foreground transition-colors">
-            Каталог
-          </Link>
-          <span>/</span>
-          <span className="text-foreground">Чехлы</span>
+    <main className="min-h-screen">
+
+      {/* ── Hero Banner ─────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden px-4 pt-12 pb-10">
+        <BlobBg
+          colors={['#0071e3', '#5ac8fa', '#ae9eff']}
+          count={3}
+          blur={100}
+          opacity={0.18}
+        />
+        {/* Dot grid */}
+        <div className="absolute inset-0 dot-grid opacity-25 pointer-events-none" />
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+
+        <div className="relative z-10 max-w-5xl mx-auto">
+          {/* Хлебные крошки */}
+          <div className="flex items-center gap-2 text-sm text-foreground-muted mb-6">
+            <Link href="/" className="hover:text-foreground transition-colors">Главная</Link>
+            <span>/</span>
+            <Link href="/catalog" className="hover:text-foreground transition-colors">Каталог</Link>
+            <span>/</span>
+            <span className="text-foreground">Чехлы</span>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-8">
+            <div>
+              {/* Бейдж */}
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0071e3]/10 border border-[#0071e3]/20 text-[#0071e3] text-xs font-semibold uppercase tracking-widest mb-4">
+                <Sparkles size={11} />
+                Новинки и хиты
+              </div>
+              <h1 className="text-4xl sm:text-5xl font-bold text-foreground tracking-tight leading-[1.1] mb-2">
+                {title}
+              </h1>
+              <p className="text-foreground-muted text-base">
+                {model
+                  ? `Чехлы, совместимые с ${modelSlugToLabel(model)}`
+                  : 'Выберите модель iPhone, чтобы найти подходящий чехол'}
+              </p>
+            </div>
+
+            {/* Мини-статистика */}
+            <div className="flex gap-3 sm:ml-auto shrink-0">
+              {[
+                { val: '200+', label: 'моделей' },
+                { val: '24ч',  label: 'бронь' },
+              ].map(({ val, label }) => (
+                <div key={label} className="text-center px-4 py-2.5 rounded-2xl bg-white/70 border border-border backdrop-blur-sm shadow-sm">
+                  <p className="text-lg font-bold text-foreground">{val}</p>
+                  <p className="text-[11px] text-foreground-muted">{label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* Заголовок */}
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-semibold text-foreground mb-2">{title}</h1>
-          <p className="text-foreground-muted">
-            {model
-              ? `Чехлы, совместимые с ${modelSlugToLabel(model)}`
-              : 'Выберите модель iPhone, чтобы найти подходящий чехол'}
-          </p>
+      {/* ── Фильтры + Сетка ─────────────────────────────────────────── */}
+      <div className="px-4 pb-12">
+        <div className="max-w-5xl mx-auto">
+          {/* Фильтры */}
+          <CasesFilters />
+
+          {/* Сетка */}
+          <Suspense key={gridKey} fallback={<CatalogGridSkeleton />}>
+            <CatalogGrid
+              search={combinedSearch}
+              categoryName="Чехлы"
+              page={page}
+              inStock={inStock}
+              limit={12}
+            />
+          </Suspense>
         </div>
-
-        {/* Фильтры */}
-        <CasesFilters />
-
-        {/* Сетка */}
-        <Suspense key={gridKey} fallback={<CatalogGridSkeleton />}>
-          <CatalogGrid
-            search={combinedSearch}
-            categoryName="Чехлы"
-            page={page}
-            inStock={inStock}
-            limit={12}
-          />
-        </Suspense>
       </div>
     </main>
   )

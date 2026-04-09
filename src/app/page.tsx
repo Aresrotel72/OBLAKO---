@@ -7,7 +7,6 @@ import Features from '@/components/ui/Features'
 import StoreSection from '@/components/ui/StoreSection'
 import PopularProducts from '@/components/ui/PopularProducts'
 import ProductCardSkeleton from '@/components/ui/ProductCardSkeleton'
-import BrandMarquee from '@/components/ui/BrandMarquee'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 
 function ProductsSkeleton() {
