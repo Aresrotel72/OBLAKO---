@@ -1,26 +1,23 @@
 import Link from 'next/link'
-import { getProducts } from '@/lib/ca-api'
 import type { CaProduct } from '@/types/product'
 import ProductCard from './ProductCard'
 import { ArrowRight } from 'lucide-react'
 import { ALL_DEMO_PRODUCTS } from '@/lib/demo-products'
 import SectionHeader from './SectionHeader'
 
-export default async function PopularProducts() {
-  let products: CaProduct[] = []
-  let error = false
-
+async function fetchProducts(): Promise<CaProduct[]> {
   try {
+    const { getProducts } = await import('@/lib/ca-api')
     const res = await getProducts({ limit: 8, inStock: true })
-    products = res.data
+    const data = Array.isArray(res?.data) ? res.data : []
+    return data.length > 0 ? data : ALL_DEMO_PRODUCTS.slice(0, 8)
   } catch {
-    error = true
+    return ALL_DEMO_PRODUCTS.slice(0, 8)
   }
+}
 
-  // Используем демо-товары если API пустой
-  if (!error && products.length === 0) {
-    products = ALL_DEMO_PRODUCTS.slice(0, 8)
-  }
+export default async function PopularProducts() {
+  const products = await fetchProducts()
 
   return (
     <section className="py-20 px-4">
@@ -35,25 +32,11 @@ export default async function PopularProducts() {
           className="mb-10"
         />
 
-        {error && (
-          <div className="rounded-2xl border border-border bg-background-card p-8 text-center text-foreground-muted">
-            Не удалось загрузить товары. Попробуйте позже.
-          </div>
-        )}
-
-        {!error && products.length === 0 && (
-          <div className="rounded-2xl border border-border bg-background-card p-8 text-center text-foreground-muted">
-            Товары в наличии пока отсутствуют.
-          </div>
-        )}
-
-        {!error && products.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        )}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
 
         <div className="mt-8 text-center sm:hidden">
           <Link href="/catalog" className="link-apple text-sm">

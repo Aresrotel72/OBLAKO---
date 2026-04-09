@@ -34,6 +34,22 @@ export const DEMO_IPHONE_CASES: CaProduct[] = [
   { id: 'd-017', name: 'Silicone Case iPhone 16e — Neon Yellow',                      article: 'MGYW4',   description: 'Силиконовый чехол Apple, яркий Neon Yellow',                 sellingPrice: 124.90, quantity: 22, unit: 'шт', category: { id: 'c1', name: 'Чехлы' }, stockStatus: 'ok' },
 ]
 
+export const DEMO_GLASS: CaProduct[] = [
+  // ── Remax ──
+  { id: 'g-001', name: 'Remax GL-27 iPhone 17 Pro Max — 9H Anti-Glare',   article: 'RM-GL27-17PM', description: 'Матовое 9H стекло Remax, антибликовое, полное покрытие, пыленепроницаемый слой', sellingPrice: 14.90, quantity: 25, unit: 'шт', category: { id: 'c4', name: 'Стёкла' }, stockStatus: 'ok'  },
+  { id: 'g-002', name: 'Remax GL-31 iPhone 17 Pro — Privacy Glass',        article: 'RM-GL31-17P',  description: 'Приватное стекло Remax, защита от взгляда сбоку, 9H твёрдость',                sellingPrice: 16.90, quantity: 18, unit: 'шт', category: { id: 'c4', name: 'Стёкла' }, stockStatus: 'ok'  },
+  { id: 'g-003', name: 'Remax GL-52 iPhone 17 — Full Cover Crystal Clear', article: 'RM-GL52-17',   description: 'Прозрачное стекло Remax, 0.26mm, полный клей, HD Clear',                       sellingPrice: 12.90, quantity: 40, unit: 'шт', category: { id: 'c4', name: 'Стёкла' }, stockStatus: 'ok'  },
+  { id: 'g-004', name: 'Remax GL-19 iPhone 16 Pro Max — Dust-Free Kit',    article: 'RM-GL19-16PM', description: 'Набор Remax: стекло 9H + рамка для поклейки + очиститель экрана',              sellingPrice: 18.90, quantity: 12, unit: 'шт', category: { id: 'c4', name: 'Стёкла' }, stockStatus: 'ok'  },
+
+  // ── Pink Glaze ──
+  { id: 'g-005', name: 'Pink Glaze iPhone 17 Pro Max — Rose Crystal',      article: 'PG-RC-17PM',   description: 'Розовое зеркальное стекло Pink Glaze, 9H, защита от царапин и сколов',         sellingPrice: 13.90, quantity: 20, unit: 'шт', category: { id: 'c4', name: 'Стёкла' }, stockStatus: 'ok'  },
+  { id: 'g-006', name: 'Pink Glaze iPhone 17 — Matte Blush',               article: 'PG-MB-17',     description: 'Матовое стекло розовый туман Pink Glaze, антифингерпринт, 0.33mm',             sellingPrice: 11.90, quantity: 15, unit: 'шт', category: { id: 'c4', name: 'Стёкла' }, stockStatus: 'ok'  },
+
+  // ── Green ──
+  { id: 'g-007', name: 'Green Premium iPhone 17 Pro Max — 3D Full Cover',  article: 'GN-3D-17PM',   description: 'Стекло Green Premium 3D с рамкой, 9H, полный клей, ультразвуковой сканер ✓',  sellingPrice: 19.90, quantity: 22, unit: 'шт', category: { id: 'c4', name: 'Стёкла' }, stockStatus: 'ok'  },
+  { id: 'g-008', name: 'Green Silicone Edge iPhone 17 Pro — Clear',        article: 'GN-SE-17P',    description: 'Стекло Green с силиконовыми краями, защита от сколов, прозрачное',             sellingPrice: 17.90, quantity: 9,  unit: 'шт', category: { id: 'c4', name: 'Стёкла' }, stockStatus: 'low' },
+]
+
 export const DEMO_ACCESSORIES: CaProduct[] = [
   { id: 'd-101', name: 'AirPods 4 с активным шумоподавлением', article: 'AP4-ANC', description: 'Беспроводные наушники Apple, USB-C', sellingPrice: 249.90, quantity: 8,  unit: 'шт', category: { id: 'c2', name: 'Наушники' }, stockStatus: 'ok' },
   { id: 'd-102', name: 'Apple MagSafe Charger 25W',             article: 'MS-25W',  description: 'Беспроводная зарядка MagSafe 25W', sellingPrice: 59.90,  quantity: 15, unit: 'шт', category: { id: 'c3', name: 'Зарядки'  }, stockStatus: 'ok' },
@@ -57,7 +73,8 @@ export const DEMO_ANDROID_SALE: CaProduct[] = [
 ]
 
 export const ALL_DEMO_PRODUCTS = [
-  ...DEMO_IPHONE_CASES,
+  ...DEMO_GLASS,
   ...DEMO_ACCESSORIES,
+  ...DEMO_IPHONE_CASES,
   ...DEMO_ANDROID_SALE,
 ]
