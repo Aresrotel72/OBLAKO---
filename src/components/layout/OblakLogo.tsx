@@ -22,7 +22,7 @@ export default function OblakLogo({ size = 36, className = '' }: OblakLogoProps)
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-label="OBLAKO"
-      fill="white"
+      fill="currentColor"
     >
       <g transform="translate(0,726) scale(0.1,-0.1)">
         {/* Основные буквы O B L A K O */}

@@ -248,7 +248,7 @@ export default function Header() {
 
             {/* Logo */}
             <Link href="/" className="shrink-0 justify-self-start">
-              <OblakLogo size={36} />
+              <OblakLogo size={36} className="text-foreground" />
             </Link>
 
             {/* Desktop nav */}

@@ -14,14 +14,14 @@ export default function BrandMarquee() {
       <ScrollVelocity
         texts={[BRANDS_ROW1]}
         velocity={2}
-        scrollerClassName="text-lg sm:text-xl font-display font-bold text-black/20 uppercase tracking-[0.2em] select-none"
+        scrollerClassName="text-lg sm:text-xl font-display font-bold text-foreground-muted uppercase tracking-[0.2em] select-none"
         numCopies={4}
       />
 
       <ScrollVelocity
         texts={[BRANDS_ROW2]}
         velocity={-2}
-        scrollerClassName="text-lg sm:text-xl font-display font-bold text-black/15 uppercase tracking-[0.2em] select-none"
+        scrollerClassName="text-lg sm:text-xl font-display font-bold text-foreground-muted uppercase tracking-[0.2em] select-none"
         numCopies={4}
       />
     </section>

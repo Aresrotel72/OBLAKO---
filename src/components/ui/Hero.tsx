@@ -110,7 +110,7 @@ export default function Hero() {
           <SplitText
             text="iPhone."
             tag="h1"
-            className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] gradient-text block"
+            className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] text-[#0071e3] block"
             delay={30}
             duration={0.9}
             from={{ opacity: 0, y: 50 }}
@@ -152,7 +152,7 @@ export default function Hero() {
             <Link
               href="/catalog"
               data-magnetic
-              className="inline-flex items-center justify-center px-6 py-3 rounded-xl text-sm font-medium text-foreground-secondary border border-border-hover hover:border-[#0071e3]/40 hover:text-[#0071e3] hover:bg-[#0071e3]/5 transition-all duration-200"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-xl text-sm font-medium text-foreground-secondary border border-border bg-white/70 backdrop-blur-sm hover:border-[#0071e3]/40 hover:text-[#0071e3] hover:bg-white transition-all duration-200 shadow-sm"
             >
               Весь каталог
             </Link>
@@ -164,16 +164,16 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.7 }}
-          className="mt-14 flex flex-wrap justify-center gap-8 text-xs text-foreground-muted"
+          className="mt-14 flex flex-wrap justify-center gap-3 text-xs text-foreground-muted"
         >
           {[
             { val: '200+', label: 'моделей чехлов' },
             { val: '24ч',  label: 'бронирование'   },
             { val: '14 дн',label: 'возврат'         },
           ].map(({ val, label }) => (
-            <div key={label} className="flex items-center gap-1.5">
-              <span className="font-semibold text-foreground-secondary text-sm">{val}</span>
-              <span>{label}</span>
+            <div key={label} className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-border shadow-sm">
+              <span className="font-semibold text-foreground text-sm">{val}</span>
+              <span className="text-foreground-muted">{label}</span>
             </div>
           ))}
         </motion.div>
