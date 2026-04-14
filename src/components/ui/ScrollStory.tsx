@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -14,14 +13,14 @@ gsap.registerPlugin(ScrollTrigger)
 // Формат: любой HTTPS-адрес к JPG/PNG/WEBP
 // Рекомендуемый размер: от 600×900px, вертикальный (портрет)
 const STORY_IMAGES = [
-  // Ch1 — замени на фото поставщика
-  'https://fastly.picsum.photos/id/663/600/900.jpg?hmac=ho50slFnebT_xQ7-Ei9Uox4fCOiXNggJUVhd_SwzkUE',
-  // Ch2 — замени на фото поставщика
-  'https://fastly.picsum.photos/id/471/600/900.jpg?hmac=usCErIXfV_ZySO861hAsmMG301C9DP89CxeMFwEl2BQ',
-  // Ch3 — замени на фото поставщика
-  'https://fastly.picsum.photos/id/485/600/900.jpg?hmac=4kbmDXLJ3yvTQ30eUkxc7zMopwBfvHSfz7_xIgGcHSk',
-  // Ch4 — замени на фото поставщика
-  'https://fastly.picsum.photos/id/611/600/900.jpg?hmac=LLEtukbrX7YaE9i1LRKSEKIUZ05pJko_CJgBehrBnQY',
+  // Ch1 — Защита: Hoco AS2 противоударный, чёрный (iP15 Pro Max)
+  'https://gpbest.by/upload/iblock/fdd/fddfbdaec6cc8c6033f68ae248ba7d55.jpg',
+  // Ch2 — Стиль: Hoco AS1 магнитный с кольцом, прозрачный (iP15 Pro Max)
+  'https://gpbest.by/upload/iblock/b5e/b5ea70b9d86b5ceda134053074c9f941.jpg',
+  // Ch3 — Свобода: Hoco AS1 магнитный с кольцом, пурпурный (iP15 Pro)
+  'https://gpbest.by/upload/iblock/4d7/4d713c91ff5c4080fc4b4f49c87a3053.jpg',
+  // Ch4 — Твой: Hoco AS5 противоударный, синий (iP15 Pro Max)
+  'https://gpbest.by/upload/iblock/218/218df3db913cdf119e048b1ff5a0bc40.jpg',
 ]
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -209,13 +208,11 @@ export default function ScrollStory() {
                   className="absolute inset-0 rounded-3xl overflow-hidden"
                   style={{ opacity: 0 }}
                 >
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={src}
                     alt={`Глава ${i + 1}`}
-                    fill
-                    sizes="220px"
-                    className="object-cover"
-                    priority={i === 0}
+                    className="object-cover w-full h-full"
                   />
                   {/* Dark vignette on photo */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />

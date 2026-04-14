@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'fastly.picsum.photos' },
       { protocol: 'https', hostname: 'picsum.photos' },
       { protocol: 'https', hostname: '*.picsum.photos' },
+      { protocol: 'https', hostname: 'gpbest.by' },
     ],
     unoptimized: false,
   },
